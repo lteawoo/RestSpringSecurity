@@ -10,12 +10,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/member/welcome").anonymous()
-				.anyRequest().authenticated();
+				.antMatchers("/member/welcome", "/member/signup").anonymous()
+				.anyRequest().authenticated()
+			.and()
+			.csrf().disable();
 	}
+	
+//	@Override
+//	public void configure(WebSecurity web) throws Exception {
+//		web.ignoring()
+//			.antMatchers("/h2-console**",
+//					"/v2/api-docs",
+//	                "/swagger-resources/**",
+//	                "/swagger-ui.html",
+//	                "/webjars/**");
+//	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		
+		web.ignoring().antMatchers("/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**",
+                "/h2-console/**",
+                "/js/**");
 	}
 }
