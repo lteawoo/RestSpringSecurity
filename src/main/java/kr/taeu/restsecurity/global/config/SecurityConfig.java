@@ -1,30 +1,34 @@
-package kr.taeu.restsecurity.config;
+package kr.taeu.restsecurity.global.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import kr.taeu.restsecurity.global.security.rest.filter.RestAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+	
+	@Bean
+	public RestAuthenticationFilter restAuthenticationFilter() throws Exception {
+		RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(new AntPathRequestMatcher("/member/signin", HttpMethod.POST.name()));
+		restAuthenticationFilter.setAuthenticationManager(this.authenticationManager());
+		return restAuthenticationFilter;
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/member/welcome", "/member/signup").anonymous()
+				.antMatchers("/member/welcome", "/member/signup", "/member/signin").anonymous()
 				.anyRequest().authenticated()
 			.and()
+			.formLogin().disable()
 			.csrf().disable();
 	}
-	
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		web.ignoring()
-//			.antMatchers("/h2-console**",
-//					"/v2/api-docs",
-//	                "/swagger-resources/**",
-//	                "/swagger-ui.html",
-//	                "/webjars/**");
-//	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {

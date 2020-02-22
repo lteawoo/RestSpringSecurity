@@ -1,4 +1,4 @@
-package kr.taeu.restsecurity.config;
+package kr.taeu.restsecurity.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
