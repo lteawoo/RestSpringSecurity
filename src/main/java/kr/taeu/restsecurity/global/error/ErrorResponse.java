@@ -20,15 +20,12 @@ public class ErrorResponse {
 	}
 	
 	public ErrorResponse(final ErrorCode code, final Exception e) {
-		this.code = code.getCode();
+		this(code);
 		this.message = e.getMessage();
-		this.status = code.getStatus();
 	}
 	
 	public ErrorResponse(final ErrorCode code, final BindingResult bindingResult) {
-		this.code = code.getCode();
-		this.message = code.getMessage();
+		this(code);
 		this.errors = FieldError.parse(bindingResult);
-		this.status = code.getStatus();
 	}
 }
