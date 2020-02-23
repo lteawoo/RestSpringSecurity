@@ -31,6 +31,7 @@ public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFi
 					"Authentication method not supported: " + request.getMethod());
 		}
 		
+		/* dto로 받는 것..이 이상한 건가 */
 		SignInRequest signInRequest = new ObjectMapper().readValue(request.getReader(), SignInRequest.class);
 		
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword());
