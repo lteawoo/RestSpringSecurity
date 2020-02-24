@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import kr.taeu.restsecurity.global.security.rest.RestAuthenticationFailuerHandler;
 import kr.taeu.restsecurity.global.security.rest.filter.RestAuthenticationFilter;
 
 @EnableWebSecurity
@@ -17,6 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public RestAuthenticationFilter restAuthenticationFilter() throws Exception {
 		RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(new AntPathRequestMatcher("/member/signin", HttpMethod.POST.name()));
 		restAuthenticationFilter.setAuthenticationManager(this.authenticationManager());
+		restAuthenticationFilter.setAuthenticationFailureHandler(new RestAuthenticationFailuerHandler());
+//		restAuthenticationFilter.setAuthenticationSuccessHandler(successHandler);
 		return restAuthenticationFilter;
 	}
 	
