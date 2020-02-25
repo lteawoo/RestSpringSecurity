@@ -20,7 +20,7 @@ import kr.taeu.restsecurity.member.domain.model.Email;
 import kr.taeu.restsecurity.member.domain.model.Password;
 import kr.taeu.restsecurity.member.dto.SignUpRequest;
 import kr.taeu.restsecurity.member.exception.EmailAlreadyExistsException;
-import kr.taeu.restsecurity.member.exception.MemberNotFoundException;
+import kr.taeu.restsecurity.member.exception.EmailNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -49,7 +49,7 @@ public class MemberDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Member> optMember = this.memberDetailsRepository.findByEmail(new Email(username));
-		Member member = optMember.orElseThrow(() -> new UsernameNotFoundException(username));
+		Member member = optMember.orElseThrow(() -> new EmailNotFoundException(new Email(username)));
 		
 		/*
 		 * 권한 설정 > 예제이므로 멤버당 한개씩이라고 가정함
