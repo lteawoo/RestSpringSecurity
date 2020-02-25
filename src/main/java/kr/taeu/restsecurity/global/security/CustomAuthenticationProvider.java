@@ -1,7 +1,6 @@
 package kr.taeu.restsecurity.global.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -10,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.taeu.restsecurity.member.domain.model.Email;
+import kr.taeu.restsecurity.member.exception.InvalidPasswordException;
 import kr.taeu.restsecurity.member.service.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		String password = user.getPassword();
 		
 		if(!passwordEncoder.matches(String.valueOf(token.getCredentials()), password)) {
-			throw new BadCredentialsException("Invalid Passsword");
+			throw new InvalidPasswordException();
 		}
 		
 		return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());

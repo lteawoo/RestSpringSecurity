@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.taeu.restsecurity.global.error.ErrorCode;
 import kr.taeu.restsecurity.global.error.ErrorResponse;
 import kr.taeu.restsecurity.member.exception.EmailNotFoundException;
+import kr.taeu.restsecurity.member.exception.InvalidPasswordException;
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -30,10 +32,18 @@ public class RestAuthenticationFailuerHandler implements AuthenticationFailureHa
 		if(EmailNotFoundException.class == exception.getClass()) {
 			ErrorResponse er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
 			response.setStatus(HttpStatus.CONFLICT.value());
-			//response.setContentType(MediaType.)
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			response.getOutputStream().println(objectMappger.writeValueAsString(er));
+		} else if (InvalidPasswordException.class == exception.getClass()) {
+			ErrorResponse er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
+			response.setStatus(HttpStatus.CONFLICT.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.getOutputStream().println(objectMappger.writeValueAsString(er));
 		} else {
-			log.info("틀림! ");
+			ErrorResponse er = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE, exception);
+			response.setStatus(HttpStatus.CONFLICT.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			response.getOutputStream().println(objectMappger.writeValueAsString(er));
 		}
 	}
 }
