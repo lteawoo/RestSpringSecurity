@@ -2,6 +2,7 @@ package kr.taeu.restsecurity.member.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +22,8 @@ public class MemberController {
 	private final MemberDetailsService memberDetailsService;
 	
 	@GetMapping("/welcome")
-	public String welcome() {
-		return "hello!";
+	public String welcome(Authentication authentication) {
+		return authentication.getName() + " hello!";
 	}
 	
 	@PostMapping("/signup")

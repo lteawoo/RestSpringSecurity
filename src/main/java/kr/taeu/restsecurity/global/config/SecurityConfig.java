@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import kr.taeu.restsecurity.global.security.rest.RestAuthenticationFailuerHandler;
+import kr.taeu.restsecurity.global.security.rest.RestAuthenticationSuccessHandler;
 import kr.taeu.restsecurity.global.security.rest.filter.RestAuthenticationFilter;
 
 @EnableWebSecurity
@@ -19,14 +20,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(new AntPathRequestMatcher("/member/signin", HttpMethod.POST.name()));
 		restAuthenticationFilter.setAuthenticationManager(this.authenticationManager());
 		restAuthenticationFilter.setAuthenticationFailureHandler(new RestAuthenticationFailuerHandler());
-//		restAuthenticationFilter.setAuthenticationSuccessHandler(successHandler);
+		restAuthenticationFilter.setAuthenticationSuccessHandler(new RestAuthenticationSuccessHandler());
 		return restAuthenticationFilter;
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/member/welcome", "/member/signup", "/member/signin").anonymous()
+				.antMatchers("/member/signup", "/member/signin").anonymous()
 				.anyRequest().authenticated()
 			.and()
 			.formLogin().disable()

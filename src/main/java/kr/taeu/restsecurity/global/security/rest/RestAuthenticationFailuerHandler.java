@@ -29,21 +29,20 @@ public class RestAuthenticationFailuerHandler implements AuthenticationFailureHa
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
+		ErrorResponse er = null;
+		
 		if(EmailNotFoundException.class == exception.getClass()) {
-			ErrorResponse er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
+			er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
 			response.setStatus(HttpStatus.CONFLICT.value());
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			response.getOutputStream().println(objectMappger.writeValueAsString(er));
 		} else if (InvalidPasswordException.class == exception.getClass()) {
-			ErrorResponse er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
+			er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
 			response.setStatus(HttpStatus.CONFLICT.value());
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			response.getOutputStream().println(objectMappger.writeValueAsString(er));
 		} else {
-			ErrorResponse er = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE, exception);
+			er = new ErrorResponse(ErrorCode.REQUEST_CONFILICT_EXCEPTION, exception);
 			response.setStatus(HttpStatus.CONFLICT.value());
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			response.getOutputStream().println(objectMappger.writeValueAsString(er));
 		}
+		
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.getOutputStream().println(objectMappger.writeValueAsString(er));
 	}
 }
