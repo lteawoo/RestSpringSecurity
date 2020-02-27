@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import kr.taeu.restsecurity.global.security.rest.RestAuthenticationEntryPoint;
 import kr.taeu.restsecurity.global.security.rest.RestAuthenticationFailuerHandler;
 import kr.taeu.restsecurity.global.security.rest.RestAuthenticationSuccessHandler;
 import kr.taeu.restsecurity.global.security.rest.filter.RestAuthenticationFilter;
@@ -29,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 				.antMatchers("/member/signup", "/member/signin").anonymous()
 				.anyRequest().authenticated()
+			.and()
+			.exceptionHandling()
+				.authenticationEntryPoint(new RestAuthenticationEntryPoint())
 			.and()
 			.formLogin().disable()
 			.csrf().disable();

@@ -8,6 +8,8 @@ public enum ErrorCode {
 	REQUEST_CONFILICT_EXCEPTION("E002", "Request Conflict", 409),
 	INVALID_INPUT_VALUE("E003", "Invalid Input Value", 400),
 	
+	UNAUTHORIZED("S001", "Unauthorized", 401),
+	
 	EMAIL_ALREADY_EXISTS_EXCEPTION("M001", "Email Already Exists", 409);
 	
 	private final String code;
